@@ -71,7 +71,7 @@ const generateVerificationTokenAndSendMail = (_id: string, email: string): Promi
       });
       await auth.save();
       MailHelper.sendVerificationMail(email, auth._id);
-      resolve(auth._id);
+      resolve();
     } catch (ex: any) {
       console.log('generateVerificationTokenAndSendMail', ex.message);
       reject(ex.message);

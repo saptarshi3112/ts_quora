@@ -48,22 +48,15 @@ const userRegister = async (req: Request, res: Response): Promise<any> => {
     if (userFound) {
       res.json(statusMessage.USER409);
     } else {
-
       const newUser = new User({
         first_name: user.first_name,
         last_name: user.last_name,
         email: user.email
       });
-
       newUser.password = await UserHelper.hashPassword(user.password);
       await newUser.save();
-
-      const verificationCode: string = await UserHelper.generateVerificationTokenAndSendMail(newUser._id, newUser.email);
-
-      return res.json({
-        ...statusMessage.USER200,
-        code: verificationCode
-      });
+      await UserHelper.generateVerificationTokenAndSendMail(newUser._id, newUser.email);
+      return res.json(statusMessage.USER200);
     }
   } catch (ex) {
     return res.json({ ...statusMessage.SERVER500, error: ex.message });
