@@ -5,7 +5,7 @@ import {
 
 import { Authentication, User } from '../models';
 import { UserSchema } from '../schema/user.schema';
-import { UserHelper } from '../helpers';
+import { UserHelper, UtilityHelper } from '../helpers';
 import { statusMessage } from '../config';
 
 const userLogin = async (req: Request, res: Response): Promise<any> => {
@@ -37,7 +37,7 @@ const userLogin = async (req: Request, res: Response): Promise<any> => {
       }
     }
   } catch (ex) {
-    return res.json({ ...statusMessage.SERVER500, error: ex.message });
+    res.json(UtilityHelper.errorHandler(ex));
   }
 };
 
@@ -59,7 +59,7 @@ const userRegister = async (req: Request, res: Response): Promise<any> => {
       return res.json(statusMessage.USER200);
     }
   } catch (ex) {
-    return res.json({ ...statusMessage.SERVER500, error: ex.message });
+    res.json(UtilityHelper.errorHandler(ex));
   }
 };
 
@@ -95,7 +95,7 @@ const userVerification = async (req: Request, res: Response): Promise<any> => {
       res.json(statusMessage.USER403);
     }
   } catch (ex) {
-    return res.json({ ...statusMessage.SERVER500, error: ex.message });
+    res.json(UtilityHelper.errorHandler(ex));
   }
 };
 
