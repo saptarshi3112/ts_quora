@@ -1,21 +1,6 @@
-import {
-  createTransport,
-} from 'nodemailer';
-
-import { environment } from '../config';
+import { transporter, environment } from '../config';
 
 const sendVerificationMail = async (email: string, id: string) => {
-
-  const transporter = createTransport({
-    service: 'gmail',
-    auth: {
-      user: environment.mailerEmail,
-      pass: environment.mailerPassword
-    },
-    tls: {
-      rejectUnauthorized: false
-    }
-  });
 
   const mailOptions = {
     from: environment.mailerEmail,
@@ -32,7 +17,6 @@ const sendVerificationMail = async (email: string, id: string) => {
     }
   });
 }
-
 
 export const MailHelper = {
   sendVerificationMail
