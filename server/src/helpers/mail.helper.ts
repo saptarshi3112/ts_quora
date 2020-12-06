@@ -2,7 +2,7 @@ import { transporter, environment } from '../config';
 
 const sendVerificationMail = async (email: string, id: string, type: string) => {
 
-  let subject = "";
+  let subject: string = "";
   switch (type) {
     case "PASSWORD_CHANGE":
       subject = "Password change request";
@@ -14,7 +14,7 @@ const sendVerificationMail = async (email: string, id: string, type: string) => 
       break;
   }
 
-  const mailOptions = {
+  const mailOptions: any = {
     from: environment.mailerEmail,
     to: email,
     subject,

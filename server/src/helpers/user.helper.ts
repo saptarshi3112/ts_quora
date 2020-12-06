@@ -17,8 +17,8 @@ import { AuthSchema } from '../schema/auth.schema';
 const hashPassword = (password: string): Promise<any> => {
   return new Promise((resolve, reject) => {
     try {
-      const salt = genSaltSync(10);
-      const hash = hashSync(password, salt);
+      const salt: string = genSaltSync(10);
+      const hash: string = hashSync(password, salt);
       resolve(hash)
     } catch (ex: any) {
       console.log('hashPassword', ex.message);
@@ -30,7 +30,7 @@ const hashPassword = (password: string): Promise<any> => {
 const verifyPassword = (password: string, hash: string): Promise<any> => {
   return new Promise((resolve, reject) => {
     try {
-      const match = compareSync(password, hash);
+      const match: boolean = compareSync(password, hash);
       resolve(match);
     } catch (ex: any) {
       console.log('verifyPassword', ex.message);
@@ -42,8 +42,8 @@ const verifyPassword = (password: string, hash: string): Promise<any> => {
 const createToken = (payload: any): Promise<any> => {
   return new Promise((resolve, reject) => {
     try {
-      const jsonPayload = UtilityHelper.docToJSON(payload);
-      const token = sign(jsonPayload, environment.jwtSecret);
+      const jsonPayload: JSON | any = UtilityHelper.docToJSON(payload);
+      const token: string = sign(jsonPayload, environment.jwtSecret);
       resolve(token);
     } catch (ex: any) {
       console.log('createToken', ex.message);
@@ -55,7 +55,7 @@ const createToken = (payload: any): Promise<any> => {
 const verifyToken = (token: string): Promise<any> => {
   return new Promise((resolve, reject) => {
     try {
-      const data = verify(token, environment.jwtSecret);
+      const data: any = verify(token, environment.jwtSecret);
       resolve(data);
     } catch (ex: any) {
       console.log('verifyToken', ex.message);
@@ -67,7 +67,7 @@ const verifyToken = (token: string): Promise<any> => {
 const generateVerificationTokenAndSendMail = (_id: string, email: string, type: string): Promise<any> => {
   return new Promise(async (resolve, reject) => {
     try {
-      const auth = new Authentication({
+      const auth: any = new Authentication({
         user_id: _id,
         request_type: type
       });
