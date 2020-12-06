@@ -1,7 +1,11 @@
 import requests
 import json
 
-from constants import BASE_URL
+from constants import (
+    BASE_URL,
+    EMAIL,
+    PASSWORD
+)
 
 class User:
     @staticmethod
@@ -21,5 +25,5 @@ class User:
             return '404'
 
 
-login = User.login_user("sapt@yopmail.com", "ubuntu")
+login = User.login_user(EMAIL, PASSWORD)
 print(login)
