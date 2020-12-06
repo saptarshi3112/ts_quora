@@ -4,3 +4,6 @@ node_modules/
 .env
 
 package-lock.json
+
+src/scripts/__pycache__/
+src/scripts/constants.py
