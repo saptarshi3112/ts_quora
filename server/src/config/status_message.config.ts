@@ -34,6 +34,11 @@ export const statusMessage = {
     "status_code": "409"
   },
 
+  "REQUEST400": {
+    "message": "Bad request",
+    "status_code": "400"
+  },
+
   "REQUEST403": {
     "message": "Unauthorized request",
     "status_code": "403"
