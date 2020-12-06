@@ -27,7 +27,7 @@ const userLogin = async (req: Request, res: Response): Promise<any> => {
         const token: string = await UserHelper.createToken(userFound);
         return res.json({
           ...statusMessage.USER200,
-          data: { token, user: userFound }
+          data: { token, user: { ...userFound, password: null } }
         })
       }
     }
@@ -75,7 +75,7 @@ const userVerification = async (req: Request, res: Response): Promise<any> => {
         const token: string = await UserHelper.createToken(userFound);
         return res.json({
           ...statusMessage.USER200,
-          data: { token, user: userFound }
+          data: { token, user: { ...userFound, password: null } }
         })
       }
     } else {

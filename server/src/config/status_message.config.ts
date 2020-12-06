@@ -11,7 +11,11 @@ export const statusMessage = {
     "message": "User details update successfully",
     "status_code": "202"
   },
-  "USER204": {},
+
+  "USER204": {
+    "message": "User deleted successfully",
+    "status_code": "204"
+  },
 
   "USER401": {
     "message": "Username or Password invalid",
