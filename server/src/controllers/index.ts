@@ -1,5 +1,7 @@
 import { UserController } from './user.controller';
+import { TagsController } from './tags.controller';
 
 export {
-  UserController
+  UserController,
+  TagsController
 }
