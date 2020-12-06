@@ -10,8 +10,9 @@ import {
 } from 'jsonwebtoken';
 
 import { UtilityHelper, MailHelper } from './index';
-import { environment } from '../config';
+import { environment, statusMessage } from '../config';
 import { Authentication } from '../models';
+import { AuthSchema } from '../schema/auth.schema';
 
 const hashPassword = (password: string): Promise<any> => {
   return new Promise((resolve, reject) => {
@@ -63,17 +64,44 @@ const verifyToken = (token: string): Promise<any> => {
   });
 }
 
-const generateVerificationTokenAndSendMail = (_id: string, email: string): Promise<any> => {
+const generateVerificationTokenAndSendMail = (_id: string, email: string, type: string): Promise<any> => {
   return new Promise(async (resolve, reject) => {
     try {
       const auth = new Authentication({
-        user_id: _id
+        user_id: _id,
+        request_type: type
       });
       await auth.save();
-      MailHelper.sendVerificationMail(email, auth._id);
-      resolve();
+      MailHelper.sendVerificationMail(email, auth._id, type);
+      resolve(true);
     } catch (ex: any) {
       console.log('generateVerificationTokenAndSendMail', ex.message);
+      reject(ex.message);
+    }
+  });
+};
+
+const verifyAuthRequest = (code: string, type: string): Promise<any> => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const authFound: AuthSchema | any = await Authentication.findOne({ _id: code, request_type: type, authenticated: false });
+      if (!authFound) {
+        resolve(statusMessage.USER403);
+      } else {
+        if (authFound.authenticated) {
+          resolve(statusMessage.USER403);
+        } else {
+          // one auth request found. verify it.
+          authFound.authenticated = true;
+          await authFound.save();
+          resolve({
+            ...statusMessage.USER200,
+            user_id: authFound.user_id
+          });
+        }
+      }
+    } catch (ex: any) {
+      console.log('verifyAuthRequest', ex.message);
       reject(ex.message);
     }
   });
@@ -84,5 +112,6 @@ export const UserHelper = {
   verifyPassword,
   createToken,
   verifyToken,
-  generateVerificationTokenAndSendMail
+  generateVerificationTokenAndSendMail,
+  verifyAuthRequest
 };

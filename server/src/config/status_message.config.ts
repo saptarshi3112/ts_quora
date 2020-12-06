@@ -7,6 +7,10 @@ export const statusMessage = {
     "message": "User created successfully",
     "status_code": "201"
   },
+  "USER202": {
+    "message": "User details update successfully",
+    "status_code": "202"
+  },
   "USER204": {},
 
   "USER401": {

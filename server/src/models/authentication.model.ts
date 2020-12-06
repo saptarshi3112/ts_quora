@@ -12,6 +12,10 @@ const AuthenticationSchema: Schema = new Schema({
   authenticated: {
     type: Boolean,
     default: false
+  },
+  request_type: {
+    type: String,
+    required: true
   }
 });
 

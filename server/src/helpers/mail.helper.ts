@@ -1,12 +1,24 @@
 import { transporter, environment } from '../config';
 
-const sendVerificationMail = async (email: string, id: string) => {
+const sendVerificationMail = async (email: string, id: string, type: string) => {
+
+  let subject = "";
+  switch (type) {
+    case "PASSWORD_CHANGE":
+      subject = "Password change request";
+      break;
+    case "SIGN_UP":
+      subject = "User verification";
+      break;
+    default:
+      break;
+  }
 
   const mailOptions = {
     from: environment.mailerEmail,
     to: email,
-    subject: 'User verification',
-    text: `Your code is ${id}`
+    subject,
+    text: `Your ${subject} code is ${id}`
   };
 
   transporter.sendMail(mailOptions, (error, info) => {

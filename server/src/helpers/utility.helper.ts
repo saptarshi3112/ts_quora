@@ -1,5 +1,5 @@
 import { statusMessage } from '../config';
- 
+
 const docToJSON = (doc: any): JSON => {
   return JSON.parse(JSON.stringify(doc));
 };
