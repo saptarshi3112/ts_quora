@@ -1,8 +1,4 @@
-import {
-  Request,
-  Response,
-  NextFunction
-} from 'express';
+import { Request, Response, NextFunction } from 'express';
 
 import { UserHelper, UtilityHelper } from '../helpers';
 import { statusMessage } from '../config';

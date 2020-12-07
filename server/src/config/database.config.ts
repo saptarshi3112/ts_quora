@@ -1,8 +1,4 @@
-import {
-  connect,
-  connection,
-  Connection
-} from 'mongoose';
+import { connect, connection, Connection } from 'mongoose';
 
 import { environment } from './index';
 

@@ -1,6 +1,4 @@
-import {
-  createTransport,
-} from 'nodemailer';
+import { createTransport } from 'nodemailer';
 
 import { environment } from '../config';
 

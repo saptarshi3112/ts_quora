@@ -1,8 +1,4 @@
-import {
-  model,
-  Model,
-  Schema
-} from 'mongoose';
+import { model, Model, Schema } from 'mongoose';
 
 const loginAuthenticationSchema: Schema = new Schema({
   user_id: {

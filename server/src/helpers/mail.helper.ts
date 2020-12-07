@@ -8,31 +8,33 @@ import { transporter, environment } from '../config';
  */
 const sendVerificationMail = async (email: string, id: string, type: string) => {
 
-  let subject: string = "";
+  let subject: string = "", text: string = "";
+  
   switch (type) {
     case "PASSWORD_CHANGE":
       subject = "Password change request";
+      text = `Your ${subject} code is ${id}`;
       break;
     case "SIGN_UP":
       subject = "User verification";
+      text = `Your ${subject} code is ${id}`;
       break;
     default:
       break;
   }
 
-  const mailOptions: any = {
+  const mailOptions: JSON | any = {
     from: environment.mailerEmail,
     to: email,
     subject,
-    text: `Your ${subject} code is ${id}`
+    text
   };
 
   transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
+    if (error)
       console.log(error);
-    } else {
+    else
       console.log('Email sent: ' + info.response);
-    }
   });
 }
 

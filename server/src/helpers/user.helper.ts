@@ -1,13 +1,5 @@
-import {
-  compareSync,
-  hashSync,
-  genSaltSync
-} from 'bcryptjs';
-
-import {
-  sign,
-  verify
-} from 'jsonwebtoken';
+import { compareSync, hashSync, genSaltSync } from 'bcryptjs';
+import { sign, verify } from 'jsonwebtoken';
 
 import { UtilityHelper, MailHelper } from './index';
 import { environment, statusMessage } from '../config';

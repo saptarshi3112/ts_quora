@@ -1,8 +1,4 @@
-import {
-  Request,
-  Response,
-  NextFunction
-} from 'express';
+import { Request, Response, NextFunction } from 'express';
 
 /**
  * Logs the url and the method of the request
