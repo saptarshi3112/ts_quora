@@ -1,5 +1,11 @@
 import { transporter, environment } from '../config';
 
+/**
+ * Send mailer helper
+ * @param email 
+ * @param id 
+ * @param type 
+ */
 const sendVerificationMail = async (email: string, id: string, type: string) => {
 
   let subject: string = "";

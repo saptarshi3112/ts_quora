@@ -6,6 +6,9 @@ import {
 
 import { environment } from './index';
 
+/**
+ * Database initialization
+ */
 export const dbInit = (): void => {
   const connectionString: string = `mongodb://${environment.dbHost}:${environment.dbPort}/${environment.dbName}`;
   connect(connectionString, {
