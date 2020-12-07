@@ -14,6 +14,11 @@ import { environment, statusMessage } from '../config';
 import { Authentication } from '../models';
 import { AuthSchema } from '../schema/auth.schema';
 
+/**
+ * Hash the password for user
+ * @param password
+ * @returns {Promise}
+ */
 const hashPassword = (password: string): Promise<any> => {
   return new Promise((resolve, reject) => {
     try {
@@ -27,6 +32,12 @@ const hashPassword = (password: string): Promise<any> => {
   });
 };
 
+/**
+ * Verify users password for login
+ * @param password
+ * @param hash
+ * @returns {Promise}
+ */
 const verifyPassword = (password: string, hash: string): Promise<any> => {
   return new Promise((resolve, reject) => {
     try {
@@ -39,6 +50,11 @@ const verifyPassword = (password: string, hash: string): Promise<any> => {
   });
 };
 
+/**
+ * Create a jwt token depending on user details
+ * @param payload
+ * @returns {Promise}
+ */
 const createToken = (payload: any): Promise<any> => {
   return new Promise((resolve, reject) => {
     try {
@@ -52,6 +68,11 @@ const createToken = (payload: any): Promise<any> => {
   });
 };
 
+/**
+ * Verify a JWT token
+ * @param token
+ * @returns {Promise}
+ */
 const verifyToken = (token: string): Promise<any> => {
   return new Promise((resolve, reject) => {
     try {
@@ -64,6 +85,13 @@ const verifyToken = (token: string): Promise<any> => {
   });
 }
 
+/**
+ * Create a auth request and send the token via mail
+ * @param _id
+ * @param email
+ * @param type
+ * @returns {Promise}
+ */
 const generateVerificationTokenAndSendMail = (_id: string, email: string, type: string): Promise<any> => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -81,10 +109,20 @@ const generateVerificationTokenAndSendMail = (_id: string, email: string, type: 
   });
 };
 
+/**
+ * Verify a auth request made by user
+ * @param code
+ * @param type
+ * @returns {Promise}
+ */
 const verifyAuthRequest = (code: string, type: string): Promise<any> => {
   return new Promise(async (resolve, reject) => {
     try {
-      const authFound: AuthSchema | any = await Authentication.findOne({ _id: code, request_type: type, authenticated: false });
+      const authFound: AuthSchema | any = await Authentication.findOne({
+        _id: code,
+        request_type: type,
+        authenticated: false
+      });
       if (!authFound) {
         resolve(statusMessage.USER403);
       } else {

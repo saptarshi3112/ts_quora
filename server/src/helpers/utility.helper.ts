@@ -4,7 +4,7 @@ const docToJSON = (doc: any): JSON => {
   return JSON.parse(JSON.stringify(doc));
 };
 
-const errorHandler = (ex: Error) => {
+const errorHandler = (ex: Error): JSON | object => {
   return {
     ...statusMessage.SERVER500,
     error: ex.message

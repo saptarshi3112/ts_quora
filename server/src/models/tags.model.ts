@@ -8,7 +8,16 @@ const tagSchema: Schema = new Schema({
   votes: {
     type: Number,
     default: 0
-  }
+  },
+  voters: [{
+    type: Schema.Types.ObjectId,
+    ref: 'user',
+    unique: true
+  }],
+  questions: [{
+    type: Schema.Types.ObjectId,
+    ref: 'question'
+  }]
 });
 
 export const Tag: Model<any> = model('tag', tagSchema);

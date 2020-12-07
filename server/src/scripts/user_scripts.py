@@ -9,10 +9,10 @@ from constants import (
 
 class User:
     @staticmethod
-    def login_user(email, password):
+    def login_user():
         response = requests.post(BASE_URL+'/user/login', json.dumps({
-            "email": email,
-	        "password": password
+            "email": EMAIL,
+	        "password": PASSWORD
         }), headers={
             'Content-Type': 'application/json'
         })
@@ -23,7 +23,3 @@ class User:
             return parsed_data['data']
         else:
             return '404'
-
-
-login = User.login_user(EMAIL, PASSWORD)
-print(login)

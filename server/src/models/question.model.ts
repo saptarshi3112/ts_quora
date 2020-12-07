@@ -27,7 +27,7 @@ const questionSchema: Schema = new Schema({
   }],
   tags: [{
     type: Schema.Types.ObjectId,
-    ref: 'tags'
+    ref: 'tag'
   }]
 });
 

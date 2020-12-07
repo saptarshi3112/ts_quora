@@ -1,13 +1,16 @@
-import {
-  Request,
-  Response
-} from 'express';
+import { Request, Response } from 'express';
 
 import { User } from '../models';
 import { UserSchema } from '../schema/user.schema';
 import { UserHelper, UtilityHelper } from '../helpers';
 import { statusMessage } from '../config';
 
+/**
+ * User login
+ * @param req
+ * @param res
+ * @returns {Promise}
+ */
 const userLogin = async (req: Request, res: Response): Promise<any> => {
   try {
     const user: UserSchema = req.body;
@@ -36,6 +39,12 @@ const userLogin = async (req: Request, res: Response): Promise<any> => {
   }
 };
 
+/**
+ * User registration
+ * @param req
+ * @param res
+ * @returns {Promise}
+ */
 const userRegister = async (req: Request, res: Response): Promise<any> => {
   try {
     const user: UserSchema = req.body;
@@ -61,6 +70,12 @@ const userRegister = async (req: Request, res: Response): Promise<any> => {
   }
 };
 
+/**
+ * Verify a registered user
+ * @param req
+ * @param res
+ * @returns {Promise}
+ */
 const userVerification = async (req: Request, res: Response): Promise<any> => {
   try {
     const { code } = req.body;
@@ -86,6 +101,12 @@ const userVerification = async (req: Request, res: Response): Promise<any> => {
   }
 };
 
+/**
+ * User request change of password with token
+ * @param req
+ * @param res
+ * @returns {Promise}
+ */
 const requestPasswordChange = async (req: Request, res: Response): Promise<any> => {
   try {
     const { user_id, email } = req.body;
@@ -102,12 +123,18 @@ const requestPasswordChange = async (req: Request, res: Response): Promise<any> 
   }
 };
 
+/**
+ * Reset user password after confirmation
+ * @param req
+ * @param res
+ * @returns {Promise}
+ */
 const resetPassword = async (req: Request, res: Response): Promise<any> => {
   try {
-    const { code, password, confirmPassword } = req.body;
+    const { code, password, confirm_password } = req.body;
     const authFound: any = await UserHelper.verifyAuthRequest(code, 'PASSWORD_CHANGE');
     if (authFound && authFound.status_code === '200') {
-      if (password === confirmPassword) {
+      if (password === confirm_password) {
         // update the user password.
         const userFound = await User.findOne({ _id: authFound.user_id, is_verified: true });
         userFound.password = await UserHelper.hashPassword(password);
