@@ -8,14 +8,13 @@ import { TagSchema } from '../schema/tag.schema';
 
 /**
  * Fetch all tags
- * @param req 
- * @param res 
+ * @param req
+ * @param res
  * @returns {Promise}
  */
 const getAllTags = async (req: Request, res: Response): Promise<any> => {
   try {
     const { limit }: number | any = req.query;
-    console.log(limit);
     let tags = [];
     if (limit)
       tags = await Tag.find().limit(limit);
@@ -32,8 +31,8 @@ const getAllTags = async (req: Request, res: Response): Promise<any> => {
 
 /**
  * Search tags by their names
- * @param req 
- * @param res 
+ * @param req
+ * @param res
  * @returns {Promise}
  */
 const searchTagsByName = async (req: Request, res: Response): Promise<any> => {
@@ -49,24 +48,36 @@ const searchTagsByName = async (req: Request, res: Response): Promise<any> => {
   }
 }
 
+/**
+ * Create a new tag
+ * @param req
+ * @param res
+ * @returns {Promise}
+ */
 const createTag = async (req: Request, res: Response): Promise<any> => {
   try {
     const tag: TagSchema = req.body;
     const tagObject = await Tag.findOne({ name: tag.name }).lean();
-    if (tagObject) {
+    if (!tagObject) {
       const newTag = new Tag({
         name: tag.name
       });
       await newTag.save();
       return res.json(statusMessage.TAG201);
     } else {
-      return res.json(statusMessage.TAG404);
+      return res.json(statusMessage.TAG409);
     }
   } catch (ex: any) {
     return res.json(UtilityHelper.errorHandler(ex));
   }
 }
 
+/**
+ * Vote a tag
+ * @param req
+ * @param res
+ * @returns {Promise}
+ */
 const voteTag = async (req: Request, res: Response): Promise<any> => {
   try {
     const { tag_id, user_id }: object | any = req.body;

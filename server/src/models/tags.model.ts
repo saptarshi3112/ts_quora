@@ -11,8 +11,7 @@ const tagSchema: Schema = new Schema({
   },
   voters: [{
     type: Schema.Types.ObjectId,
-    ref: 'user',
-    unique: true
+    ref: 'user'
   }],
   questions: [{
     type: Schema.Types.ObjectId,

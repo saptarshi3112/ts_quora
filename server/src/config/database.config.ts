@@ -17,7 +17,7 @@ export const dbInit = (): void => {
   db.on('error', console.error.bind(console, 'connection error:'));
   db.once('open', (err: Error) => {
     if (err) {
-      console.log(err);
+      console.log(err.message);
     } else {
       console.log('Database connected at ' + connectionString);
     }

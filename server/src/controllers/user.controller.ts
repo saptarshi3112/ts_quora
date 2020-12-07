@@ -1,9 +1,11 @@
 import { Request, Response } from 'express';
 
-import { User } from '../models';
-import { UserSchema } from '../schema/user.schema';
+import { User, LoginAuthentication } from '../models';
 import { UserHelper, UtilityHelper } from '../helpers';
 import { statusMessage } from '../config';
+
+import { UserSchema } from '../schema/user.schema';
+import { LoginAuthenticationSchema } from '../schema/login_authentication.schema';
 
 /**
  * User login
@@ -26,6 +28,13 @@ const userLogin = async (req: Request, res: Response): Promise<any> => {
         // invalid password.
         res.json(statusMessage.USER403);
       } else {
+
+        // mark user as logged in
+        const authLogin: any = await LoginAuthentication.findOne({ user_id: userFound._id });
+        authLogin.is_logged = true;
+        authLogin.last_logged_in = new Date();
+        await authLogin.save();
+
         // get token.
         const token: string = await UserHelper.createToken(userFound);
         return res.json({
@@ -85,12 +94,20 @@ const userVerification = async (req: Request, res: Response): Promise<any> => {
       if (!userFound) {
         return res.json(statusMessage.USER404);
       } else {
+        // verify the user.
         userFound.is_verified = true;
+        // create a new user auth model.
+        await new LoginAuthentication({
+          user_id: userFound._id,
+          is_logged: true
+        }).save();
+
         await userFound.save();
+
         const token: string = await UserHelper.createToken(userFound);
         return res.json({
           ...statusMessage.USER200,
-          data: { token, user: { ...userFound, password: null } }
+          data: { token, user: { ...userFound._doc, password: null } }
         })
       }
     } else {
@@ -154,10 +171,43 @@ const resetPassword = async (req: Request, res: Response): Promise<any> => {
   }
 };
 
+/**
+ * Logout user from system
+ * @param req
+ * @param res
+ * @returns {Promise}
+ */
+const userLogout = async (req: Request, res: Response): Promise<any> => {
+  try {
+    const loginAuth: LoginAuthenticationSchema = req.body;
+    const userFound: UserSchema | any = await User.findById(loginAuth.user_id);
+    if (!userFound) {
+      return res.json(statusMessage.USER404);
+    } else {
+      const loginAuthFound: LoginAuthenticationSchema | any = await LoginAuthentication.findOne({
+        user_id: loginAuth.user_id
+      });
+      if (!loginAuthFound) {
+        return res.json(statusMessage.AUTH404);
+      } else {
+
+        loginAuthFound.is_logged = false;
+        loginAuthFound.last_logged_out = new Date();
+        await loginAuthFound.save();
+
+        return res.json(statusMessage.LOGOUT200);
+      }
+    }
+  } catch (ex: any) {
+    return res.json(UtilityHelper.errorHandler(ex));
+  }
+};
+
 export const UserController = {
   userLogin,
   userRegister,
   userVerification,
   requestPasswordChange,
-  resetPassword
+  resetPassword,
+  userLogout
 };

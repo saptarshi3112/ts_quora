@@ -54,6 +54,21 @@ export const statusMessage = {
     'status_code': '404'
   },
 
+  'TAG409': {
+    'message': 'Tag already exists',
+    'status_code': '409'
+  },
+
+  'AUTH404': {
+    'message': 'Authentication Invalid',
+    'status_code': '404'
+  },
+
+  'LOGOUT200': {
+    'message': 'User logged out successfully',
+    'status_code': '200'
+  },
+
   'REQUEST400': {
     'message': 'Bad request',
     'status_code': '400'

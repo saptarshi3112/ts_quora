@@ -59,7 +59,9 @@ const createToken = (payload: any): Promise<any> => {
   return new Promise((resolve, reject) => {
     try {
       const jsonPayload: JSON | any = UtilityHelper.docToJSON(payload);
-      const token: string = sign(jsonPayload, environment.jwtSecret);
+      const token: string = sign(jsonPayload, environment.jwtSecret, {
+        expiresIn: '1d'
+      });
       resolve(token);
     } catch (ex: any) {
       console.log('createToken', ex.message);
